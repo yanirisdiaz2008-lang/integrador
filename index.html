@@ -35,7 +35,7 @@
             padding-bottom: 8px;
             margin: 0 0 10px 0;
         }
-        .rendimientobajo{
+        .rendimientobajo {
             color: #ca5c4f;
             font-weight: bold;
         }
@@ -51,64 +51,86 @@
             color: #4B0082;
             margin: 20px 20px 10px;
         }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            color: #4B0082;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
     <h1>Control de Producción</h1>
     <script>
         let nombre = prompt("Ingrese el nombre del trabajdor:");
-        let tipo = parseInt(prompt("Ingrese el tipo de producto (1: componente a, 2:componente b, 3: componente c):"));
-        let costoUnitario;
-        let producto;
-        switch(tipo) {
-            case 1:
-                costoUnitario = 5000;
-                producto = "componente a";
-                break;
-            case 2:
-                costoUnitario = 7000;
-                producto = "componente b";
-                break;
-            case 3:
-                costoUnitario = 10000;
-                producto = "componente c";
-                break;
-            default:
-                document.write("Tipo de producto no válido");
-                break;
-        }
         let piezasPorDia = [];
+        let productosPorDia = [];
+        let costosUnitarios = [];
         let continuar = "s";
         let totalPiezas = 0;
+        let costoTotal = 0;
         let dia = 1;
+
         while (continuar.toLowerCase() === "s") {
+            let tipo = parseInt(prompt("Ingrese el tipo de producto \n1 →1: componente a, \n2 →2:componente b, \n3 →3: componente c"));
+            let costoUnitario;
+            let producto;
+            switch(tipo) {
+                case 1:
+                    costoUnitario = 5000;
+                    producto = "componente a";
+                    break;
+                case 2:
+                    costoUnitario = 7000;
+                    producto = "componente b";
+                    break;
+                case 3:
+                    costoUnitario = 10000;
+                    producto = "componente c";
+                    break;
+                default:
+                    document.write("Tipo de producto no válido");
+                    continue;
+            }
             let piezas = parseInt(prompt("Ingrese la cantidad de piezas producidas en el día " + dia + ":"));
             piezasPorDia.push(piezas);
+            productosPorDia.push(producto);
+            costosUnitarios.push(costoUnitario);
             totalPiezas += piezas;
+            costoTotal += piezas * costoUnitario;
             continuar = prompt("¿Desea registrar otro día? (s/n):");
             dia++;
         }
+
         document.write("<h3>Registro de producción por día</h3>");
         for (let i = 0; i < piezasPorDia.length; i++) {
-            document.write("Día " + (i + 1) + ": " + piezasPorDia[i] + " piezas<br>");
+            document.write("Día " + (i + 1) + ": " + piezasPorDia[i] + " piezas de " + productosPorDia[i] + "<br>");
         }
-        let costoTotal = totalPiezas * costoUnitario;
+
         let rendimiento = "";
         if (totalPiezas < 50) {
-            rendimiento = "<p class='rendimientobajo'>Bajo rendimiento</p><br>";
+            rendimiento = "<span class='rendimientobajo'>Bajo rendimiento</span>";
         } else if (totalPiezas <= 100) {
-            rendimiento = "<p class='buenrendimiento'>Rendimiento aceptable</p><br>";
+            rendimiento = "<span class='buenrendimiento'>Rendimiento aceptable</span>";
         } else {
-            rendimiento = "<p class='rendimientoexcelente'>Rendimiento excelente</p><br>";
+            rendimiento = "<span class='rendimientoexcelente'>Rendimiento excelente</span>";
         }
+
         document.writeln("<div class='resumen'>");
         document.writeln("<h2>Resumen de Producción</h2>");
-        document.writeln("<p><b>Operario:</b> " + nombre + "</p>");
-        document.writeln("<p><b>Producto fabricado:</b> " + producto + "</p>");
-        document.writeln("<p><b>Total de piezas producidas:</b> " + totalPiezas + "</p>");
-        document.writeln("<p><b>Costo unitario:</b> $" + costoUnitario + "</p>");
-        document.writeln("<p><b>Costo total de producción:</b> $" + costoTotal + "</p>");
-        document.writeln("<p><b>Rendimiento:</b> " + rendimiento + "</p>");
+        document.writeln("<table>");
+        document.writeln("<tr><th>Operario</th><td>" + nombre + "</td></tr>");
+        document.writeln("<tr><th>Total de piezas producidas</th><td>" + totalPiezas + "</td></tr>");
+        document.writeln("<tr><th>Costo total de producción</th><td>$" + costoTotal + "</td></tr>");
+        document.writeln("<tr><th>Rendimiento</th><td>" + rendimiento + "</td></tr>");
+        document.writeln("</table>");
         document.writeln("</div>");
     </script>
 </body>
